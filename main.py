@@ -58,7 +58,6 @@ if __name__=="__main__":
     #print("")
         lineas.append(str(linea).split("\t"))
     for linea in lineas:
-        
         if "#" in linea[0] or linea[0] in "":
 
             lineas.pop(lineas.index(linea)) 
@@ -74,7 +73,7 @@ if __name__=="__main__":
                 print("MAC address : "+output)
                 print("Vendor      : Not found")
                 break
-    elif(checkIP(output) and len(output)!=0) and (param=="-p" or param=="--ip"):
+    elif(checkIP(output) and len(output)!=0) and (param=="-i" or param=="--ip"):
         commandLine=Popen(["arp","-n",output],stdout=PIPE)
         s=commandLine.communicate()[0].decode("utf-8")
         if s.find(output)==-1:
