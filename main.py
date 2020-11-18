@@ -4,7 +4,8 @@ import string
 from subprocess import Popen,PIPE
 import socket
 
-archivo=open("manuf.txt","r")
+archivo=Popen(["curl","-0","https://gitlab.com/wireshark/wireshark/-/raw/master/manuf"],stdout=PIPE)
+archivo.communicate()[0].decode("utf-8")
 def checkMAC(Mac):
     if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", Mac.lower()):
         return True
@@ -86,4 +87,3 @@ if __name__=="__main__":
     else:
         usage()
         sys.exit()
-archivo.close()
