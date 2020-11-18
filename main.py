@@ -69,22 +69,23 @@ if __name__=="__main__":
         commandLine=Popen(["arp","-n",output],stdout=PIPE)
         s=commandLine.communicate()[0].decode("utf-8")
         print(s)
-        if s.find(output+" ("+output+")")!=-1:
+        if s.find(output)==-1:
             print("Error: ip is outside the host network")
         else:
-            mac=re.search(r"(([a-f\d]{1,2}\:){5}[a-f\d]{1,2})", s).groups()[0]
-            for linea in lineas:
-                if(linea[0]==mac[:8].upper()):
-                    print("MAC address : "+mac)
-                    print("Vendor      : "+linea[2])
-                    break
-                elif(linea==lineas[len(lineas)-1]):
-                    print("MAC address : "+mac)
-                    print("Vendor      : Not found")
-                    break
-
-
-    else:
-        usage()
-        sys.exit()
+            if(re.search(r"(([a-f\d]{1,2}\:){5}[a-f\d]{1,2})", s)==None):
+            	print("Error: ip is outside the host network ")
+            else:
+            	mac=re.search(r"(([a-f\d]{1,2}\:){5}[a-f\d]{1,2})", s).groups()[0]
+				for linea in lineas:
+					if(linea[0]==mac[:8].upper()):
+	                	print("MAC address : "+mac)
+	                	print("Vendor      : "+linea[2])
+	                	break
+	                elif(linea==lineas[len(lineas)-1]):
+	                	print("MAC address : "+mac)
+	                	print("Vendor      : Not found")
+	                	break
+	else:
+    	usage()
+    	sys.exit()
 archivo.close()
