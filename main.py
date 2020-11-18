@@ -5,7 +5,7 @@ from subprocess import Popen,PIPE
 import socket
 
 archivo=Popen(["curl","-0","https://gitlab.com/wireshark/wireshark/-/raw/master/manuf"],stdout=PIPE)
-archivo.communicate()[0].decode("utf-8")
+archivo=archivo.communicate()[0].decode("utf-8")
 def checkMAC(Mac):
     if re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", Mac.lower()):
         return True
@@ -52,8 +52,17 @@ if __name__=="__main__":
     output,param=main()
     lineas=[]
     output=output.upper()
-    for i in archivo:
-        lineas.append(i.split("\t"))
+    lineas_parser=archivo.split("\n")
+    #print(lineas)
+    for linea in lineas_parser:
+    #print("")
+        lineas.append(str(linea).split("\t"))
+    for linea in lineas:
+        
+        if "#" in linea[0] or linea[0] in "":
+
+            lineas.pop(lineas.index(linea)) 
+    print("\n\n-----------------------------------\n\n")       
     if checkMAC(output) and len(output)>0 and (param=="-m" or param=="--mac"):
         output=output.replace("-",":")
         for linea in lineas:
