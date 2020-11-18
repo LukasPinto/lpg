@@ -23,38 +23,38 @@ def main():
     unixOptions="hi:m:"
     gnuOptions=["help","ip=","mac="]
     output = None
-    #verbose=False
     try:
         optlist,args=getopt.getopt(commandLineArgs,unixOptions,gnuOptions)
+        
     except getopt.GetoptError:
         usage()
         sys.exit(2)
-    
+    if optlist==[]:
+        print("Error: No ingresó ningun parametro")
+        usage()
+        sys.exit()
     for o, a in optlist:
-        #if o=="-v":
-         #   verbose=True
-        if o in ("--help"):
+        if o in ("--help") or o in ("-h"):
             usage()
             sys.exit()
-        elif o in ("--ip"):
+        elif o in ("--ip") or o in ("-i"):
             output,param=a,o
             return output,param
-        elif o in ("--mac"):
+        elif o in ("--mac") or o in ("-m"):
             output,param=a,o
             return output,param
         else:
-            assert False, "unhandled option"
+            print("Error: Faltan parametros obligatorios.")
+            usage()
+            sys.exit()
 if __name__=="__main__":
     output,param=main()
-    #print(output,param)
-    #print(checkMAC(output))
     lineas=[]
     output=output.upper()
     for i in archivo:
         lineas.append(i.split("\t"))
     if checkMAC(output) and len(output)>0 and (param=="-m" or param=="--mac"):
         output=output.replace("-",":")
-        #print(lineas)
         for linea in lineas:
             if(linea[0]==output[:8]):
                 print("MAC address : "+output)
@@ -65,10 +65,8 @@ if __name__=="__main__":
                 print("Vendor      : Not found")
                 break
     elif(checkIP(output) and len(output)!=0) and (param=="-p" or param=="--ip"):
-        #print("es una IP valida")
         commandLine=Popen(["arp","-n",output],stdout=PIPE)
         s=commandLine.communicate()[0].decode("utf-8")
-        print(s)
         if s.find(output)==-1:
             print("Error: ip is outside the host network")
         else:
