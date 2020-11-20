@@ -1,6 +1,5 @@
-import getopt, sys, os
+import getopt, sys
 import re
-import string
 from subprocess import Popen,PIPE
 import socket
 
@@ -53,9 +52,7 @@ if __name__=="__main__":
     lineas=[]
     output=output.upper()
     lineas_parser=archivo.split("\n")
-    #print(lineas)
     for linea in lineas_parser:
-    #print("")
         lineas.append(str(linea).split("\t"))
     for linea in lineas:
         if "#" in linea[0] or linea[0] in "":
